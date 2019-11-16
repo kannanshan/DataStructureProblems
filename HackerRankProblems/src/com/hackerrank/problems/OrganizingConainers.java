@@ -8,7 +8,7 @@ import java.util.*;
 import java.util.concurrent.*;
 import java.util.regex.*;
 
-public class Solutions {
+public class OrganizingConainers {
 
 
 	private static int get(int row, int i, int[][] container) {
