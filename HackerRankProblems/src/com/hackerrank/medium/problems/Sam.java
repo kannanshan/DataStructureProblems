@@ -1,4 +1,4 @@
-package com.hackerrank.problems;
+package com.hackerrank.medium.problems;
 
 public class Sam {
 

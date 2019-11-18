@@ -1,4 +1,4 @@
-package com.hackerrank.problems;
+package com.hackerrank.medium.problems;
 
 import java.util.HashMap;
 import java.util.Map;

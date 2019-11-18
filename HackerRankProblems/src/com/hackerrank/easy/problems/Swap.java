@@ -1,4 +1,4 @@
-package com.hackerrank.problems;
+package com.hackerrank.easy.problems;
 
 import java.util.ArrayList;
 import java.util.List;

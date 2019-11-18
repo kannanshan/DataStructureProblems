@@ -1,4 +1,4 @@
-package com.hackerrank.problems;
+package com.hackerrank.medium.problems;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -24,6 +24,9 @@ public class StringPattern {
 				if(!flag)
 					flag=true;
 				else
+					if(val==0)
+						val=map.get(ch);
+					if(val!=map.get(ch))
 					return "NO";
 			}
 			set.add(map.get(ch));
