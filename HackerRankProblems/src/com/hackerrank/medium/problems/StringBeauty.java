@@ -10,7 +10,9 @@ public class StringBeauty {
 	public static void recursive(String input, int pos, String current, List<String> resultList) {
 		Map<String, String> inputMap = new HashMap();
 		inputMap.put("1", "a");
+		inputMap.put("2", "b");
 		inputMap.put("11", "k");
+		inputMap.put("21", "i");
 		if (pos >= input.length())
 			resultList.add(current);
 		else {
@@ -23,8 +25,8 @@ public class StringBeauty {
 
 	public static void main(String args[]) {
 		List<String> result = new ArrayList();
-		recursive("111", 0, "", result);
-		System.out.println();
+		recursive("121", 0, "", result);
+		System.out.println(result);
 	}
 
 }
