@@ -1,81 +1,96 @@
 package com.hackerrank.easy.problems;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class Solution {
 
-	Map<String, String[]> data;
+	static class SortComparator implements Comparator<ResultWrapper> {
+		@Override
+		public int compare(ResultWrapper temp1, ResultWrapper temp2) {
 
-	public Solution(Map<String, String[]> data) {
-		this.data = data;
-	}
-
-	public boolean hasMutualFirstChoice(String username) {
-		return hasMutualPairForRank(username, 0);
-	}
-
-	public boolean hasMutualPairForRank(String username, int rank) {
-		String swapUserName = (data.get(username) != null && data.get(username).length  >rank  ) ? data.get(username)[rank]
-				: null;
-		String otherUserName = (data.get(swapUserName) != null && data.get(swapUserName).length > rank)
-				? data.get(swapUserName)[rank] : null;
-		if (otherUserName != null && swapUserName != null)
-			return otherUserName.equalsIgnoreCase(username);
-		return false;
-	}
-
-	public String[] changedPairings(String username, int rank)
-	{
-		String[] resultArray = null;
-		List<String> resultList = new ArrayList();
-		String existingUserName = (data.get(username) != null && data.get(username).length >rank )?data.get(username)[rank]:null;
-		String swappedUserName = (data.get(username) != null && data.get(username).length >rank )?data.get(username)[rank-1]:null;
-		if(hasMutualPairForRank(existingUserName, rank)) {
-			resultList.add(existingUserName);
+			if (temp1.count == temp2.count) {
+				return temp1.url.compareTo(temp2.url);
+			}
+			if (temp1.count < temp2.count) {
+				return 1;
+			}
+			if (temp1.count > temp2.count) {
+				return -1;
+			}
+			return 0;
 		}
-		String temp = data.get(username)[rank];
-		data.get(username)[rank]=data.get(username)[rank-1];
-		data.get(username)[rank-1] = temp;
-		String[] tempArray = data.get(username);
-		List<Integer> tem1p=null;
-		if(hasMutualPairForRank(username, rank)) {
-			resultList.add(existingUserName);
-		}
-		resultArray = new String[resultList.size()];
-		for (int i = 0; i < resultList.size(); i++) {
-			resultArray[i] = resultList.get(i);
-		}
-		return resultArray;
 	}
 
-	public static void main(String args[]) {
-		Map<String, String[]> data = new HashMap<String, String[]>();
-		data.put("a", new String[] { "c", "d" });
-		data.put("b", new String[] { "d", "a", "c" });
-		data.put("c", new String[] { "a", "b" });
-		data.put("d", new String[] { "c", "a", "b" });
-		data.put("e", new String[] {});
+	static class LogWrapper {
+		String url;
+		String ip;
+		long timeStamp;
 
-		Solution sol = new Solution(data);
-		/*System.out.println(sol.hasMutualFirstChoice(null)); // null
-		System.out.println(sol.hasMutualFirstChoice("r"));
-		System.out.println(sol.hasMutualFirstChoice("a"));
-		System.out.println(sol.hasMutualFirstChoice("b"));
-		System.out.println(sol.hasMutualPairForRank("a", 0));
-		System.out.println(sol.hasMutualPairForRank("a", 1));
-		System.out.println(sol.hasMutualPairForRank("e", 0));*/
-		//System.out.println(sol.changedPairings("d", 1));
-		//System.out.println(sol.changedPairings("b", 2));
-		System.out.println(sol.changedPairings("b", 1));
+		public LogWrapper(String bizUrl, String ip, long timeStamp) {
+			this.url = bizUrl;
+			this.ip = ip;
+			this.timeStamp = timeStamp;
+		}
 	}
 
-	// null
-	// invalid input. missing usernames
-	// bundary cases : only one value exists
-	// success case : given test case
-	// failed case
+	static class ResultWrapper {
+		String url;
+		int count;
 
+		public ResultWrapper(String url, int count) {
+			this.url = url;
+			this.count = count;
+		}
+		
+		public String toString()
+		{
+			return this.url+":"+this.count;
+		}
+	}
+
+	static List<LogWrapper> inputList = new ArrayList();
+
+	public static List<ResultWrapper> getTopBiz(int k) {
+		Map<String, ResultWrapper> tempMap = new HashMap();
+		for (LogWrapper logWrapper : inputList) {
+			ResultWrapper resultWrapper = tempMap.get(logWrapper.url);
+			if (resultWrapper == null) {
+				resultWrapper = new ResultWrapper(logWrapper.url, 0);
+				tempMap.put(logWrapper.url, resultWrapper);
+			}
+			resultWrapper.count++;
+		}
+		List<ResultWrapper> resultList = new ArrayList();
+		for (String key : tempMap.keySet()) {
+			resultList.add(tempMap.get(key));
+		}
+		Collections.sort(resultList, new SortComparator());
+		return resultList;
+	}
+
+	public static void main(String[] args) {
+		// you can write to stdout for debugging purposes, e.g.
+		System.out.println("This is a debug message");
+		LogWrapper temp = new LogWrapper("www.yelp.com/sammys","19.123.43.21",1543245201);
+		inputList.add(temp);
+		temp = new LogWrapper("www.yelp.fr/chezlulu","19.123.43.21",1543245201);
+		inputList.add(temp);
+		temp = new LogWrapper("www.yelp.it/damario","19.123.43.21",1543245201);
+		inputList.add(temp);
+		temp = new LogWrapper("www.yelp.it/damario","19.123.43.21",1543245201);
+		inputList.add(temp);
+		temp = new LogWrapper("www.yelp.com/sammys","19.123.43.21",1543245201);
+		inputList.add(temp);
+		temp = new LogWrapper("www.yelp.com/sammys","19.123.43.21",1543245201);
+		inputList.add(temp);
+		temp = new LogWrapper("www.yelp.de/alexs","19.123.43.21",1543245201);
+		inputList.add(temp);
+		List<ResultWrapper> tempList = getTopBiz(3);
+		System.out.println(tempList);
+	}
 }
