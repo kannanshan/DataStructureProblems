@@ -10,7 +10,7 @@ import java.util.regex.*;
 
 public class BirthdayCake {
 
-	// Complete the birthdayCakeCandles function below.
+	// Complete the birthdayCakeCandles function below. Test
 	static int birthdayCakeCandles(int[] ar) {
 		return 0;
 
